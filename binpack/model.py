@@ -89,8 +89,8 @@ def create_2d_model(items_dict, connections_dict, containers_dict, model_name,
         name="onecontainer"
     )   
 
-    m.addConstrs((x[v] + (r[v,0]+r[v,2])*w[v] + (r[v,1]+r[v,3])*h[v] <= W[k] + (1-mk[k])*M for v in range(no_items) for k in range(no_modules)),name="boxxv")    
-    m.addConstrs((y[v] + (r[v,0]+r[v,2])*h[v] + (r[v,1]+r[v,3])*w[v] <= H[k] + (1-mk[k])*M for v in range(no_items) for k in range(no_modules)),name="boxyv")
+    m.addConstrs((x[v] + (r[v,0]+r[v,2])*w[v] + (r[v,1]+r[v,3])*h[v] <= W[k] + (1-mvk[v,k])*M for v in range(no_items) for k in range(no_modules)),name="boxxv")    
+    m.addConstrs((y[v] + (r[v,0]+r[v,2])*h[v] + (r[v,1]+r[v,3])*w[v] <= H[k] + (1-mvk[v,k])*M for v in range(no_items) for k in range(no_modules)),name="boxyv")
 
     # fix item in container
     m.addConstrs((mvk[v,container_fixed[v]] == 1 for v in range(no_items) if not container_fixed[v] == 'inf'), name = "container_fixed")
