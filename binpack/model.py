@@ -254,7 +254,7 @@ def create_3d_model(items_dict, connections_dict, containers_dict, model_name,
     connections = [(i,j,st_id,xsi,ysi,zsi,xsj,ysj,zsj,cij) for (i,j,st_id,xsi,ysi,zsi,xsj,ysj,zsj,cij) in zip(s,t,st_id,xsi,ysi,zsi,xsj,ysj,zsj,cij)]
     V_prime = [(u,v) for u in range(no_items) for v in range(no_items) if u < v]
     
-    M = 9999
+    M = 99999
 
     m._no_items = no_items
     m._no_connections= len(connections)
@@ -300,9 +300,11 @@ def create_3d_model(items_dict, connections_dict, containers_dict, model_name,
         name="onecontainer"
     )   
 
-    m.addConstrs((x[v] + (r[v,0]+r[v,2])*w[v] + (r[v,1]+r[v,3])*h[v] <= W[k] + (1-mk[k])*M for v in range(no_items) for k in range(no_modules)),name="boxxv")
-    m.addConstrs((y[v] + (r[v,0]+r[v,2])*h[v] + (r[v,1]+r[v,3])*w[v] <= H[k] + (1-mk[k])*M for v in range(no_items) for k in range(no_modules)),name="boxyv")
-    m.addConstrs((z[v] + d[v] <= D[k] + (1-mk[k])*M for v in range(no_items) for k in range(no_modules)),name="boxzv")
+    m.addConstrs((x[v] + (r[v,0]+r[v,2])*w[v] + (r[v,1]+r[v,3])*h[v] <= W[k] + (1-mvk[v,k])*M for v in range(no_items) for k in range(no_modules)),name="boxxv")
+    m.addConstrs((y[v] + (r[v,0]+r[v,2])*h[v] + (r[v,1]+r[v,3])*w[v] <= H[k] + (1-mvk[v,k])*M for v in range(no_items) for k in range(no_modules)),name="boxyv")
+    m.addConstrs((z[v] + d[v] <= D[k] + (1-mvk[v,k])*M for v in range(no_items) for k in range(no_modules)),name="boxzv")
+
+    print(W)
 
     # fix item in container
     m.addConstrs((mvk[v,int(container_fixed[v])] == 1 for v in range(no_items) if not str(container_fixed[v]) == 'inf'), name = "container_fixed")
