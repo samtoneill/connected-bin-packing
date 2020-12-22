@@ -3,4 +3,4 @@ Project repository for the paper entitled "A Mixed-Integer Linear Programming fo
 
 This repository contains python code that implements the models in the paper via the Gurobi solver. The set notation used in the paper is also used in the code for clarity. 
 
-Results for the paper are also included within the results folder
+Results for the paper are also included within the results folder.
